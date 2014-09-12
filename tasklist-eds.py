@@ -392,7 +392,7 @@ class TaskListTreeView(BrowserTreeView):
 		'''Refresh the model based on index data'''
 		# Update data
 		self._clear()
-		self._append_tasks(None, None, {})
+		self._append_tasks(None, None)
 
 		# Set view
 		self._eval_filter() # keep current selection
@@ -401,7 +401,7 @@ class TaskListTreeView(BrowserTreeView):
 	def _clear(self):
 		self.real_model.clear() # flush
 
-	def _append_tasks(self, task, iter, path_cache):
+	def _append_tasks(self, task, iter):
 		for row in self.index_ext.list_tasks():
 			# Format summary
 			task = _date_re.sub('', row['summary'], count=1)
