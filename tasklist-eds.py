@@ -107,10 +107,11 @@ class IndexExtension(ObjectExtension):
                 interf_obj = dbus.Interface(proxy_obj, 'org.gnome.Shell.TaskListServer')
                 reply = interf_obj.GetTasks(True)
                 keys = ['uid', 'summary', 'description', 'start', 'end', 'due']
-                for row in reply:
-                    r =  dict(zip(keys, row))
-                    r['prio'] = 0
-                    yield r
+                r = [dict(zip(keys, row)) for row in reply]
+                s = sorted(r, key=lambda x: x['due'], reverse=True)
+                for row in s:
+                    row['prio'] = 0
+                    yield row
 
 
 
