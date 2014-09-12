@@ -15,6 +15,7 @@ import gtk
 import pango
 import logging
 import re
+import datetime
 
 
 import zim.datetimetz as datetime
@@ -407,10 +408,12 @@ class TaskListTreeView(BrowserTreeView):
 			task = _date_re.sub('', row['summary'], count=1)
 			task = re.sub('\s*!+\s*', ' ', task) # get rid of exclamation marks
 			task = encode_markup_text(task)
-                        task = r'<span color="darkgrey">%s</span>' % task
+                        task = _tag_re.sub(r'<span color="#ce5c00">@\1</span>', task) # highlight tags - same color as used in pageview
+
+                        due = datetime.date.fromtimestamp(row['due']) if row['due'] != 0 else _NO_DATE
 
 			# Insert all columns
-			modelrow = [False, row['prio'], task, row['due'], row['uid'], row['description']]
+			modelrow = [False, row['prio'], task, due, row['uid'], row['description']]
 				# VIS_COL, PRIO_COL, TASK_COL, DATE_COL, TASKID_COL, DESCR_COL
 			modelrow[0] = self._filter_item(modelrow)
 			myiter = self.real_model.append(iter, modelrow)
