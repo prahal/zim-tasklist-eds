@@ -1,6 +1,6 @@
 zim-plugin: tasklist-eds.py
 
-This plugin list the tasks of evolutoin data server via a dbus service of interface:
+This plugin lists the tasks of evolution data server via a dbus service of interface:
 
 ```
 node /org/gnome/Shell/TaskListServer {
