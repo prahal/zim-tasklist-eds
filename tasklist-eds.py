@@ -106,11 +106,10 @@ class IndexExtension(ObjectExtension):
                 proxy_obj = bus.get_object("org.gnome.Shell.TaskListServer", "/org/gnome/Shell/TaskListServer")
                 interf_obj = dbus.Interface(proxy_obj, 'org.gnome.Shell.TaskListServer')
                 reply = interf_obj.GetTasks(True)
-                keys = ['uid', 'summary', 'description', 'start', 'end', 'due']
+                keys = ['uid', 'summary', 'description', 'start', 'end', 'due', 'priority']
                 r = [dict(zip(keys, row)) for row in reply]
                 s = sorted(r, key=lambda x: x['due'], reverse=True)
                 for row in s:
-                    row['prio'] = 0
                     yield row
 
 
@@ -413,8 +412,10 @@ class TaskListTreeView(BrowserTreeView):
 
                         due = datetime.date.fromtimestamp(row['due']) if row['due'] != 0 else _NO_DATE
 
+                        priority = 10 - row['priority'] if row['priority'] != 0 else 0
+
 			# Insert all columns
-			modelrow = [False, row['prio'], task, due, row['uid'], row['description']]
+			modelrow = [False, priority, task, due, row['uid'], row['description']]
 				# VIS_COL, PRIO_COL, TASK_COL, DATE_COL, TASKID_COL, DESCR_COL
 			modelrow[0] = self._filter_item(modelrow)
 			myiter = self.real_model.append(iter, modelrow)

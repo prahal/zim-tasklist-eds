@@ -36,7 +36,7 @@ node /org/gnome/Shell/TaskListServer {
   interface org.gnome.Shell.TaskListServer {
     methods:
       GetTasks(in  b force_reload,
-               out a(sssxxxa{sv}) tasks);
+               out a(sssxxxia{sv}) tasks);
     signals:
       Changed();
     properties:
